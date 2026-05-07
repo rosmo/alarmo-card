@@ -1,11 +1,12 @@
-import { mdiCheck, mdiClose } from '@mdi/js';
-import { css, html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
-import { UnsubscribeFunc } from 'home-assistant-js-websocket';
-import { AlarmoEntity, AlarmoEvent } from '../types';
-import { ActionToState, AlarmoEvents, AlarmStates, ArmActions, EVENT, FORMAT_NUMBER } from '../const';
-import { SubscribeMixin } from '../subscribe-mixin';
-import { HomeAssistant } from '../lib/types';
+import { mdiCheck, mdiClose } from "@mdi/js";
+import { css, html, LitElement, nothing, PropertyValues, TemplateResult } from "lit";
+import { customElement, property, query, state } from "lit/decorators.js";
+import { UnsubscribeFunc } from "home-assistant-js-websocket";
+import { AlarmoEntity, AlarmoEvent } from "../types";
+import { ActionToState, AlarmoEvents, AlarmStates, ArmActions, EVENT, FORMAT_NUMBER } from "../const";
+import { SubscribeMixin } from "../subscribe-mixin";
+import { HomeAssistant } from "../lib/types";
+import { localize } from "../localize/localize";
 
 type ValidHassDomEvent = keyof HASSDomEvents;
 
@@ -120,7 +121,7 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
     if (inputField) {
       inputField.classList.remove('error');
       inputField.classList.add('error');
-      (inputField as any).invalid = true;
+      (inputField as any).hint = localize('errors.invalid_pin', this.hass!.language);
     }
   }
 
@@ -128,7 +129,7 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
     const inputField = this.shadowRoot?.querySelector('#code');
     if (inputField && inputField.classList.contains('error')) {
       inputField.classList.remove('error');
-      (inputField as any).invalid = false;
+      (inputField as any).hint = '';
       this._input = '';
       this._cancelCodeClearTimer();
     }
@@ -212,21 +213,21 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
           header-title="${this.hass.localize('ui.dialogs.enter_code.title')}"
           width="small"
         >
-          <ha-textfield
+          <ha-input
             class="input"
             ?dialogInitialFocus=${!this._narrow}
             .value=${this._input}
             id="code"
             .label=${this.hass.localize('ui.dialogs.enter_code.input_label')}
             type="password"
-            inputMode="text"
+            inputmode="text"
             @input=${(ev: Event) => {
-              this._clearCodeError();
-              this._input = (ev.target as HTMLInputElement).value;
-              this._setCodeClearTimer();
-            }}
+          this._clearCodeError();
+          this._input = (ev.target as HTMLInputElement).value;
+          this._setCodeClearTimer();
+        }}
             @focus=${this._clearCodeError}
-          ></ha-textfield>
+          ></ha-input>
           <ha-dialog-footer>
             <ha-button slot="secondaryAction" data-dialog="close" appearance="plain">
               ${this.hass.localize('ui.common.cancel')}
@@ -247,27 +248,27 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
         width="small"
       >
         <div class="container">
-          <ha-textfield
+          <ha-input
             class="input"
             ?dialogInitialFocus=${!this._narrow}
             .value=${this._input}
             id="code"
             .label=${this.hass.localize('ui.dialogs.enter_code.input_label')}
             type="password"
-            inputMode="numeric"
+            inputmode="numeric"
             @input=${(ev: Event) => {
-              this._clearCodeError();
-              this._input = (ev.target as HTMLInputElement).value;
-              this._setCodeClearTimer();
-            }}
+        this._clearCodeError();
+        this._input = (ev.target as HTMLInputElement).value;
+        this._setCodeClearTimer();
+      }}
             @focus=${this._clearCodeError}
-          ></ha-textfield>
+          ></ha-input>
           <div class="keypad">
             ${BUTTONS.map((value) =>
-              value === ''
-                ? html`<span></span>`
-                : value === 'clear'
-                  ? html`
+        value === ''
+          ? html`<span></span>`
+          : value === 'clear'
+            ? html`
                       <ha-control-button
                         @click=${this._clear}
                         class="clear"
@@ -277,8 +278,8 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
                         <ha-svg-icon path=${mdiClose}></ha-svg-icon>
                       </ha-control-button>
                     `
-                  : value === 'submit'
-                    ? html`
+            : value === 'submit'
+              ? html`
                         <ha-control-button
                           @click=${this._submit}
                           class="submit"
@@ -287,12 +288,12 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
                           <ha-svg-icon path=${mdiCheck}></ha-svg-icon>
                         </ha-control-button>
                       `
-                    : html`
+              : html`
                         <ha-control-button .value=${value} @click=${this._numberClick} .label=${value}>
                           ${value}
                         </ha-control-button>
                       `
-            )}
+      )}
           </div>
         </div>
       </ha-dialog>
@@ -304,7 +305,7 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
       /* Place above other dialogs */
       --dialog-z-index: 104;
     }
-    ha-textfield {
+    ha-input {
       width: 100%;
       max-width: 240px;
       margin: 0px auto;
@@ -312,9 +313,16 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
       margin-left: calc(50% - 240px / 2);
       margin-bottom: 18.5px;
     }
-    ha-textfield.error {
+    ha-input.error {
       animation: shake 0.2s ease-in-out 0s 2;
       margin-bottom: 0px;
+      --ha-color-border-neutral-loud: var(--ha-color-on-danger-quiet);
+    }
+    ha-input.error:not([value='']) {
+      --secondary-text-color: var(--ha-color-on-danger-quiet);
+    }
+    ha-input.error::part(wa-hint) {
+      color: var(--ha-color-on-danger-quiet);
     }
     @keyframes shake {
       0% {
