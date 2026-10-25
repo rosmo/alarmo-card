@@ -486,6 +486,7 @@ export class AlarmoCard extends SubscribeMixin(LitElement) {
           entity_id: this._config!.entity,
           action: action,
           armOptions: this.armOptions,
+          haptics: this._config!.haptics,
           cancel: () => {
             resolve(null);
           },
@@ -528,18 +529,18 @@ export class AlarmoCard extends SubscribeMixin(LitElement) {
   private _shakeKeypad() {
     const keypad = this.shadowRoot?.querySelector('#keypad');
     if (!keypad) return;
-  
+
     // animation reset
     keypad.classList.remove('shake');
     keypad.getBoundingClientRect();
     keypad.classList.add('shake');
-  
+
     // keypad red flash
     keypad.classList.add('flash');
     setTimeout(() => {
       keypad.classList.remove('flash');
     }, 150);
-  
+
     // mobile vibration
     navigator.vibrate?.([80, 40, 80]);
   }

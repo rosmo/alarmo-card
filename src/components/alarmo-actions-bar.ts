@@ -78,20 +78,24 @@ export class AlarmoActionsBar extends LitElement {
         >
           <div class="content ${hasTextLabel ? 'has-text' : ''}">
             <ha-icon icon="${isEmpty(stateConfig.button_icon) ? ActionToIcon[e] : stateConfig.button_icon}"></ha-icon>
-            ${ActionToState[e] != selectedOption && isDefined(this.readyForArmModes)
-              ? html`
-                  <ha-icon
-                    icon="${isDisabled ? 'mdi:circle-medium' : 'mdi:circle-medium'}"
-                    class="badge ${isDisabled ? 'error' : 'success'}"
-                  ></ha-icon>
-                `
-              : nothing}
+            ${
+              ActionToState[e] != selectedOption && isDefined(this.readyForArmModes)
+                ? html`
+                    <ha-icon
+                      icon="${isDisabled ? 'mdi:circle-medium' : 'mdi:circle-medium'}"
+                      class="badge ${isDisabled ? 'error' : 'success'}"
+                    ></ha-icon>
+                  `
+                : nothing
+            }
             <span>
-              ${!isDefined(stateConfig.button_label)
-                ? e == ArmActions.Disarm && stateObj.state !== AlarmStates.Disarmed
-                  ? this.hass!.localize(`ui.card.alarm_control_panel.${e}`)
-                  : this.hass!.localize(`ui.card.alarm_control_panel.modes.${ActionToState[e]}`)
-                : stateConfig.button_label}
+              ${
+                !isDefined(stateConfig.button_label)
+                  ? e == ArmActions.Disarm && stateObj.state !== AlarmStates.Disarmed
+                    ? this.hass!.localize(`ui.card.alarm_control_panel.${e}`)
+                    : this.hass!.localize(`ui.card.alarm_control_panel.modes.${ActionToState[e]}`)
+                  : stateConfig.button_label
+              }
             </span>
           </div>
         </div>

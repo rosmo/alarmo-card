@@ -16,6 +16,7 @@ export type CardConfig = {
   hide_keypad: boolean;
   show_code_inputfield: boolean;
   show_header: boolean;
+  haptics: Partial<HapticsConfig>;
 };
 
 export type HideOptions = 'always' | 'never' | 'disarmed' | 'armed';
@@ -67,3 +68,12 @@ export interface CountdownConfig {
 export interface ReadyToArmModesConfig {
   modes: AlarmStates[] | null;
 }
+
+export type HapticType = 'success' | 'warning' | 'failure' | 'light' | 'medium' | 'heavy' | 'selection' | 'none';
+
+export type HapticsConfig = {
+  keypad: HapticType;
+  armed: HapticType;
+  disarmed: HapticType;
+  code_error: HapticType;
+};

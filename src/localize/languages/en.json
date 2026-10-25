@@ -31,6 +31,25 @@
       "button_icon": "Override displayed icon",
       "state_label": "Override displayed state label",
       "color": "Override color used for the action"
+    },
+    "haptics": {
+      "title": "Haptics configuration",
+      "keypad": "Keypad presses",
+      "buttons": "Button presses",
+      "invalid_code": "Invalid code",
+      "failed_to_arm": "Failure to arm",
+      "armed": "Armed",
+      "invalid_command": "Invalid command",
+      "options": {
+        "none": "None",
+        "success": "Success",
+        "warning": "Warning",
+        "failure": "Failure",
+        "light": "Light",
+        "medium": "Medium",
+        "heavy": "Heavy",
+        "selection": "Selection"
+      }
     }
   },
   "errors": {

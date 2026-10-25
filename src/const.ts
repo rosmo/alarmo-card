@@ -85,7 +85,13 @@ export const defaultCardConfig: CardConfig = {
   use_code_dialog: false,
   hide_keypad: false,
   show_code_inputfield: true,
-  show_header: true
+  show_header: true,
+  haptics: {
+    keypad: 'none',
+    armed: 'none',
+    disarmed: 'none',
+    code_error: 'none',
+  }
 };
 
 export const minButtonScale = 1;

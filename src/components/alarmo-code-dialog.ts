@@ -1,12 +1,12 @@
-import { mdiCheck, mdiClose } from "@mdi/js";
-import { css, html, LitElement, nothing, PropertyValues, TemplateResult } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
-import { UnsubscribeFunc } from "home-assistant-js-websocket";
-import { AlarmoEntity, AlarmoEvent } from "../types";
-import { ActionToState, AlarmoEvents, AlarmStates, ArmActions, EVENT, FORMAT_NUMBER } from "../const";
-import { SubscribeMixin } from "../subscribe-mixin";
-import { HomeAssistant } from "../lib/types";
-import { localize } from "../localize/localize";
+import { mdiCheck, mdiClose } from '@mdi/js';
+import { css, html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
+import { UnsubscribeFunc } from 'home-assistant-js-websocket';
+import { AlarmoEntity, AlarmoEvent } from '../types';
+import { ActionToState, AlarmoEvents, AlarmStates, ArmActions, EVENT, FORMAT_NUMBER } from '../const';
+import { SubscribeMixin } from '../subscribe-mixin';
+import { HomeAssistant } from '../lib/types';
+import { localize } from '../localize/localize';
 
 type ValidHassDomEvent = keyof HASSDomEvents;
 
@@ -21,6 +21,7 @@ export interface CodeDialogParams {
   entity_id: string;
   action: ArmActions;
   armOptions: any;
+  haptics?: Partial<HapticsConfig>;
   confirm?: (ev: AlarmoEvents) => void;
   cancel?: () => void;
 }
@@ -222,10 +223,10 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
             type="password"
             inputmode="text"
             @input=${(ev: Event) => {
-          this._clearCodeError();
-          this._input = (ev.target as HTMLInputElement).value;
-          this._setCodeClearTimer();
-        }}
+              this._clearCodeError();
+              this._input = (ev.target as HTMLInputElement).value;
+              this._setCodeClearTimer();
+            }}
             @focus=${this._clearCodeError}
           ></ha-input>
           <ha-dialog-footer>
@@ -257,18 +258,18 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
             type="password"
             inputmode="numeric"
             @input=${(ev: Event) => {
-        this._clearCodeError();
-        this._input = (ev.target as HTMLInputElement).value;
-        this._setCodeClearTimer();
-      }}
+              this._clearCodeError();
+              this._input = (ev.target as HTMLInputElement).value;
+              this._setCodeClearTimer();
+            }}
             @focus=${this._clearCodeError}
           ></ha-input>
           <div class="keypad">
             ${BUTTONS.map((value) =>
-        value === ''
-          ? html`<span></span>`
-          : value === 'clear'
-            ? html`
+              value === ''
+                ? html`<span></span>`
+                : value === 'clear'
+                  ? html`
                       <ha-control-button
                         @click=${this._clear}
                         class="clear"
@@ -278,8 +279,8 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
                         <ha-svg-icon path=${mdiClose}></ha-svg-icon>
                       </ha-control-button>
                     `
-            : value === 'submit'
-              ? html`
+                  : value === 'submit'
+                    ? html`
                         <ha-control-button
                           @click=${this._submit}
                           class="submit"
@@ -288,12 +289,12 @@ export class AlarmoCodeDialog extends SubscribeMixin(LitElement) implements Hass
                           <ha-svg-icon path=${mdiCheck}></ha-svg-icon>
                         </ha-control-button>
                       `
-              : html`
+                    : html`
                         <ha-control-button .value=${value} @click=${this._numberClick} .label=${value}>
                           ${value}
                         </ha-control-button>
                       `
-      )}
+            )}
           </div>
         </div>
       </ha-dialog>

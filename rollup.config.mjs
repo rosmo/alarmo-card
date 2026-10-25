@@ -1,12 +1,18 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
-import typescript from 'rollup-plugin-typescript2';
 import babel from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
+import esbuild from 'rollup-plugin-esbuild';
 
 const plugins = [
   nodeResolve(),
-  typescript(),
+  esbuild({
+    target: 'es2021',
+    tsconfig: 'tsconfig.json',
+    loaders: {
+      '.ts': 'ts',
+    },
+  }),
   json(),
   babel({
     babelHelpers: 'bundled',

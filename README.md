@@ -1,5 +1,5 @@
 # alarmo-card <!-- omit in TOC -->
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)  
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 
 
 - [alarmo-card ](#alarmo-card-)
@@ -33,7 +33,7 @@ The alarmo-card is similar to the [Lovelace alarm panel card](https://www.home-a
 
 ### Countdown timer
 
-A countdown timer is displayed when the alarm is in arming or pending state. 
+A countdown timer is displayed when the alarm is in arming or pending state.
 The countdown timer will show the remaining time of the configured exit / entry delay.
 This gives you an indication of how much time you have left for leaving the house / disarming the alarm.
 
@@ -49,7 +49,7 @@ The state of these sensors is visible in the message, such that you have feedbac
 ### Arming options
 When the alarm is disabled, an icon is shown in the top-right corner of the card. By clicking it a menu is revealed with the advanced arming options:
 * *Skip delay*: setting this option will cause the exit delay to be skipped, so arming the alarm will be effective immediately. This is practical in case you want to arm the alarm after you already left the house.
-* *Bypass open sensors*: this option forces the alarm to be armed. In case sensors are blocking the arming, they will be automatically bypassed (temporarily eliminated from the alarm). 
+* *Bypass open sensors*: this option forces the alarm to be armed. In case sensors are blocking the arming, they will be automatically bypassed (temporarily eliminated from the alarm).
 
 The arming options are only applied on the next time you arm the alarm.
 
@@ -71,7 +71,7 @@ Note: Ensure you have a www folder created as in config/www or the installation 
 1. Click the Orange + button bottom right and search for Alarmo Card
 2. Click on "Install" under the new card that just popped up.
 
-Note: Ensure to install [`https://github.com/nielsfaber/alarmo`](https://github.com/nielsfaber/alarmo) and add the integration in order for the card to work properly. 
+Note: Ensure to install [`https://github.com/nielsfaber/alarmo`](https://github.com/nielsfaber/alarmo) and add the integration in order for the card to work properly.
 
 Manual installation
 
@@ -138,8 +138,9 @@ Configuration using UI mode:
 | `show_ready_indicator`  | boolean | Optional     | Adds ready/not ready indicators to the arm mode buttons.                                                                                                                        | `true`             |
 | `show_bypassed_sensors` | boolean | Optional     | Show a warning message when the alarm is armed with bypassed sensors.                                                                                                           | `true`             |
 | `states`                | object  | Optional     | Customize the display of states in the card.<br>See [state configuration](#state-configuration).                                                                                |                    |
+| `haptics`                | object  | Optional     | Customize the haptics for interactions.<br>See [haptics-configuration](#haptics-configuration).
 
-### State configuration 
+### State configuration
 State configuration allows users to modify the displayed texts and buttons (where applicable) in the card corresponding to certain states.
 
 Note that the alarm entity may not support all `armed_xxx` states. States which are not supported will not show up in the card and cannot be configured.
@@ -176,6 +177,17 @@ states:
 Result:
 
 ![example result](https://github.com/nielsfaber/alarmo-card/blob/main/screenshots/state-config-example.png?raw=true "example result")
+
+### Haptics configuration
+You can set haptics to be triggered on buttons and keypad presses. For more information see, [haptics in Home Assistant](https://companion.home-assistant.io/docs/integrations/haptics/).
+
+'success' | 'warning' | 'failure' | 'light' | 'medium' | 'heavy' | 'selection' | 'none'
+| Name         | Type   | Applicable states                                                                              | Description                      | Default |
+|--------------|--------|------------------------------------------------------------------------------------------------|----------------------------------|---------|
+| `keypad`     | string | `success`<br>`warning`<br>`failure`<br>`light`<br>`medium`<br>`heavy`<br>`selection`<br>`none` | Haptics for code keypad presses. | `none`  |
+| `armed`      | string | `success`<br>`warning`<br>`failure`<br>`light`<br>`medium`<br>`heavy`<br>`selection`<br>`none` | Haptics for arming success.      | `none`  |
+| `disarmed`   | string | `success`<br>`warning`<br>`failure`<br>`light`<br>`medium`<br>`heavy`<br>`selection`<br>`none` | Haptics for disarming success.   | `none`  |
+| `code_error` | string | `success`<br>`warning`<br>`failure`<br>`light`<br>`medium`<br>`heavy`<br>`selection`<br>`none` | Haptics for invalid code.        | `none`  |
 
 ---
 
